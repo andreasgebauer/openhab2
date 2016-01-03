@@ -1,0 +1,8 @@
+
+<dataTypes>
+	<dataType name="physicalAddress" type="org.openhab.binding.cec.internal.protocol.data.PhysicalAddress" length="3" />
+	<dataType name="deviceType"  length="1" />
+	<dataType name="vendorId" type="java.lang.Integer" length="3" />
+	<dataType name="powerStatus" type="org.openhab.binding.cec.internal.protocol.data.PowerStatus" length="1" />
+</dataTypes>
+

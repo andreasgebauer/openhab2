@@ -14,5 +14,13 @@
 		<provide
 			interface="org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory" />
 	</service>
+	<reference bind="setDiscoveryServiceRegistry"
+		cardinality="1..1"
+		interface="org.eclipse.smarthome.config.discovery.DiscoveryServiceRegistry"
+		name="DiscoveryServiceRegistry" policy="static"
+		unbind="unsetDiscoveryServiceRegistry" />
+	<reference bind="setCecService" cardinality="1..1"
+		interface="org.openhab.binding.cec.internal.CecService"
+		name="CecService" policy="static" />
 
 </scr:component>

@@ -1,0 +1,156 @@
+<cec-config>
+	<messages>
+		<message name="Polling Message" category="System Information">
+			<description>Queries the system to determine device addresses and language.</description>
+		</message>
+		
+		<message id="0x00" name="Feature Abort">
+			<description>Used as a response to indicate that the device does not support the requested message type, or that it cannot execute it at the present time (Directly addressed)</description>
+			<datas>
+				<data name="featureOpcode" type="org.openhab.binding.cec.internal.protocol.data.FeatureOpcode" />
+				<data name="abortReason" type="org.openhab.binding.cec.internal.protocol.data.AbortReason" />
+			</datas>
+		</message>
+		
+		<message id="0x04" name="Image View On" category="One Touch Play">
+			<description>Sent by a source device to the TV whenever it enters the active state (alternatively it may send "Text View On") (Directly addressed)</description>
+		</message>
+		
+		<message id="0x1A" name="Give Deck Status" category="Deck Control">
+			<description>Used to request the status of a device, regardless of whether or not it is the current active source (Directly addressed)</description>
+			<datas>
+				<data name="statusRequest" type="org.openhab.binding.cec.internal.protocol.data.StatusRequest"/>
+			</datas>
+		</message>
+
+		<message id="0x1B" name="Deck Status" category="Deck Control">
+			<description>Used to provide a deck’s status to the initiator of the "Give Deck Status" message (Directly addressed)</description>
+			<datas>
+				<data name="deckStatus" type="org.openhab.binding.cec.internal.protocol.data.DeckStatus"/>
+			</datas>
+		</message>
+		
+		<message id="0x32" name="Set Menu Language" category="">
+			<description>Used by a TV or another device to indicate the menu language (Broadcast)</description>
+			<datas>
+				<data type="java.lang.String" name="language" target="sender.menuLanguage"/>
+			</datas>
+		</message>
+		
+		<message id="0x36" name="Standby" category="System Standby" target="system.standBy">
+			<description>Switches on or all devices into standby mode. Can be used a broadcast message or be addressed to a specific device (Broadcast or Directly addressed)</description>
+		</message>
+		
+		<message id="0x44" name="User Control Pressed" category="Device Menu Control">
+			<description>Used to indicate that the user pressed a remote control button or switched from one remote control button to another (Directly addressed). This message is used in several features : Device Menu Control,System Audio Control,Remote Control Pass Through</description>
+			<datas>
+				<data type="java.lang.String" name="uiCommand" />
+			</datas>
+		</message>
+		
+		<message id="0x45" name="User Control Release" category="Device Menu Control">
+			<description>Indicates that user released a remote control button (the last one indicated by the "User Control Pressed" message) (Directly addressed). This message is used in several features : Device Menu Control,System Audio Control,Remote Control Pass Through</description>
+		</message>
+		
+		<message id="0x46" name="Give OSD Name" category="Device OSD Name Transfer">
+			<description>Used to request the preferred OSD name of a device for use in menus associated with that device (Directly addressed)</description>
+		</message>
+
+		<message id="0x47" name="Set OSD Name" category="Device OSD Name Transfer">
+			<description>Used to set the preferred OSD name of a device for use in menus associated with that device (Directly addressed) parameters</description>
+			<datas>
+				<data name="osdName" type="java.lang.String" target="sender.osdName"/>
+			</datas>
+		</message>
+		
+		<message id="0x80" name="Routing Change" category="Routing Control">
+			<description>Sent by a CEC Switch when it is manually switched to inform all other devices on the network that the active route below the switch has changed (Broadcast)</description>
+			<datas>
+				<data name="originalAddress" type="org.openhab.binding.cec.internal.protocol.data.PhysicalAddress"/>
+				<data name="newAddress" type="org.openhab.binding.cec.internal.protocol.data.PhysicalAddress" target="sender.physicalAddress" />
+			</datas>
+		</message>
+
+		<message id="0x82" name="Active Source" category="System Information">
+			<description>Used by a new source to indicate that it has started to transmit a stream OR used in response to a "Request Active Source" (Broadcast). This message is used in several features : One Touch Play,Routing Control</description>
+			<datas>
+				<data name="physicalAddress" type="org.openhab.binding.cec.internal.protocol.data.PhysicalAddress" target="system.activeSource" />
+			</datas>
+		</message>
+
+		<message id="0x83" name="Give Physical Address" category="System Information">
+			<description>A request to a device to return its physical address. (Directly addressed)</description>
+		</message>
+
+		<message id="0x84" name="Report Physical Address" category="System Information">
+			<description>Used to inform all other devices of the mapping between physical and logical address of the initiator (Broadcast) parameters</description>
+			<datas>
+				<data name="physicalAddress" type="org.openhab.binding.cec.internal.protocol.data.PhysicalAddress" target="sender.physicalAddress" />
+				<data name="deviceType" type="org.openhab.binding.cec.internal.device.DeviceType" target="sender.deviceType"/>
+			</datas>
+		</message>
+
+		<message id="0x85" name="Request Active Source" category="Routing Control">
+			<description>Used by a new device to discover the status of the system (Broadcast)</description>
+		</message>
+
+		<message id="0x87" name="Device Vendor ID" category="Vendor Specific Command" >
+			<description>Reports the Vendor ID of this device (Broadcast)</description>
+			<datas>
+				<data name="vendorId" type="org.openhab.binding.cec.internal.device.Vendor" target="sender.vendor" />
+			</datas>
+		</message>
+		
+		<message id="0x8A" name="Vendor Remote Button Down" category="Vendor Specific Command">
+			<description>Indicates that a remote control button has been depressed (Directly addressed or Broadcast)</description>
+		</message>
+		
+		<message id="0x8C" name="Give Device Vendor ID" category="Vendor Specific Command" >
+			<description>Requests the Vendor ID from a device (Directly addressed)</description>
+		</message>
+		
+		<message id="0x8E" name="0x8E ???" category="???">
+			<description>???</description>
+		</message>
+		
+		<message id="0x8F" name="Give Device Power Status" category="Device Power Status">
+			<description>Used to determine the current power status of a target device (Directly addressed)</description>
+		</message>
+		
+		<message id="0x90" name="Report Power Status" category="Device Power Status">
+			<description>Used to inform a requesting device of the current power status (Directly addressed)</description>
+			<datas>
+				<data name="powerStatus" type="powerStatus" target="sender.powerStatus" />
+			</datas>
+		</message>
+		
+		<message id="0x91" name="0x91 ???" category="???">
+			<description>???</description>
+		</message>
+		
+		<message id="0x9D" name="Inactive Source" category="Routing Control">
+			<datas>
+				<data name="inactiveSource" type="org.openhab.binding.cec.internal.protocol.data.PhysicalAddress" target="system.inactiveSource" />
+			</datas>
+		</message>
+		
+		<message id="0x9E" name="CEC Version">
+			<datas>
+				<data name="cecVersion" type="java.lang.Integer" target="sender.cecVersion" />
+			</datas>
+		</message>
+		
+		<message id="0x9F" name="Get CEC Version" category="System Information">
+			<description>Used by a device to enquire which version of CEC the target supports (Directly addressed)</description>
+		</message>
+		
+		<message id="0xA0" name="Vendor Command With ID" category="Vendor Specific Command">
+			<description>Allows vendor specific commands to be sent between two devices or broadcast (Directly addressed or Broadcast)</description>
+			<datas>
+				<data name="vendorId" type="org.openhab.binding.cec.internal.device.Vendor" />
+				<data name="vendorSpecificData" type="java.lang.String" />
+			</datas>
+		</message>
+	</messages>
+
+</cec-config>

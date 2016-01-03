@@ -8,17 +8,20 @@
  */
 package org.openhab.binding.cec.internal;
 
-import static org.openhab.binding.cec.CecBindingConstants.*;
+import static org.openhab.binding.cec.CecBindingConstants.SUPPORTED_THING_TYPES_UIDS;
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.Dictionary;
 
-import org.openhab.binding.cec.handler.CecHandler;
 import org.eclipse.smarthome.config.discovery.DiscoveryServiceRegistry;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
+import org.openhab.binding.cec.internal.config.CecBindingConfiguration;
+import org.openhab.binding.cec.internal.handler.CecHandler;
+import org.osgi.service.component.ComponentContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The {@link CecHandlerFactory} is responsible for creating things and thing handlers.
@@ -27,10 +30,31 @@ import org.eclipse.smarthome.core.thing.binding.ThingHandler;
  */
 public class CecHandlerFactory extends BaseThingHandlerFactory {
 
-  private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections
-      .singleton(THING_TYPE_SAMPLE);
-
+  private static final Logger LOG = LoggerFactory.getLogger(CecHandlerFactory.class);
   private DiscoveryServiceRegistry discoveryServiceRegistry;
+  private CecService cecService;
+
+  @Override
+  protected void activate(ComponentContext componentContext) {
+    super.activate(componentContext);
+    Dictionary<String, Object> properties = componentContext.getProperties();
+
+    CecBindingConfiguration config = new CecBindingConfiguration();
+
+    String device = (String) properties.get(CecBindingConfiguration.DEVICE);
+    if (device != null)
+      config.device = device;
+
+    String executable = (String) properties.get(CecBindingConfiguration.EXECUTABLE);
+    if (executable != null)
+      config.executable = executable;
+
+    Integer refresh = (Integer) properties.get(CecBindingConfiguration.REFRESH_INTERVAL);
+    if (refresh != null)
+      config.refreshInterval = refresh;
+
+    cecService.setup(config);
+  }
 
   @Override
   public boolean supportsThingType(ThingTypeUID thingTypeUID) {
@@ -39,13 +63,20 @@ public class CecHandlerFactory extends BaseThingHandlerFactory {
 
   @Override
   protected ThingHandler createHandler(Thing thing) {
-
-    ThingTypeUID thingTypeUID = thing.getThingTypeUID();
-
-    if (thingTypeUID.equals(THING_TYPE_SAMPLE)) {
-      return new CecHandler(thing, discoveryServiceRegistry);
-    }
-
-    return null;
+    LOG.debug("Creating thing handler for {}", thing);
+    return new CecHandler(thing, discoveryServiceRegistry, cecService);
   }
+
+  public void setCecService(CecService cecService) {
+    this.cecService = cecService;
+  }
+
+  protected void setDiscoveryServiceRegistry(DiscoveryServiceRegistry discoveryServiceRegistry) {
+    this.discoveryServiceRegistry = discoveryServiceRegistry;
+  }
+
+  protected void unsetDiscoveryServiceRegistry(DiscoveryServiceRegistry discoveryServiceRegistry) {
+    this.discoveryServiceRegistry = null;
+  }
+
 }

@@ -4,21 +4,104 @@
 	xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
 	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
 
-	<!-- Sample Thing Type -->
-	<thing-type id="sample">
-		<label>cec Binding Thing</label>
-		<description>Sample thing for cec Binding</description>
+	<bridge-type id="cecBridge">
+		<label>CEC Bridge</label>
+		<description>The CEC Bridge</description>
 
 		<channels>
-			<channel id="channel1" typeId="sample-channel" />
+			<channel typeId="activeSource" id="activeSource" />
+		</channels>
+	</bridge-type>
+
+	<channel-type id="power">
+		<item-type>Switch</item-type>
+		<label>Power</label>
+		<description>Power of a CEC device.</description>
+		<category>Switch</category>
+	</channel-type>
+
+	<channel-type id="powerStatus">
+		<item-type>String</item-type>
+		<label>Power status</label>
+		<description>Power status of a CEC device.</description>
+		<state readOnly="true">
+			<options>
+				<option value="ON" />
+				<option value="STANDBY" />
+				<option value="IN_TRANSITION_STANDBY_TO_ON" />
+				<option value="IN_TRANSITION_ON_TO_STANDBY" />
+			</options>
+		</state>
+	</channel-type>
+
+	<thing-type id="tv">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="cecBridge" />
+		</supported-bridge-type-refs>
+
+		<label>CEC TV</label>
+		<description>A CEC television.</description>
+
+		<channels>
+			<channel id="power" typeId="power" />
+			<channel id="powerStatus" typeId="powerStatus" />
+			<channel id="activeSource" typeId="activeSource" />
 		</channels>
 	</thing-type>
 
-	<!-- Sample Channel Type -->
-	<channel-type id="sample-channel">
-		<item-type>cecItem</item-type>
-		<label>cec Binding Channel</label>
-		<description>Sample channel for cec Binding</description>
+	<channel-type id="activeSource">
+		<item-type>String</item-type>
+		<label>Active Source</label>
+		<description>The active source (active route).</description>
 	</channel-type>
+
+	<channel-type id="port">
+		<item-type>String</item-type>
+		<label>Active Source</label>
+		<description>The currently active source.</description>
+	</channel-type>
+
+
+	<thing-type id="playback">
+		<label>CEC Playback</label>
+		<description>A CEC playback device.</description>
+
+		<channels>
+			<channel id="power" typeId="power" />
+			<channel id="powerStatus" typeId="powerStatus" />
+		</channels>
+	</thing-type>
+
+	<thing-type id="recording">
+		<label>CEC Recording</label>
+		<description>A CEC recording device.</description>
+
+		<channels>
+			<channel id="power" typeId="power" />
+			<channel id="powerStatus" typeId="powerStatus" />
+		</channels>
+
+	</thing-type>
+
+	<thing-type id="tuner">
+		<label>CEC Tuner</label>
+		<description>A CEC tuner device.</description>
+
+		<channels>
+			<channel id="power" typeId="power" />
+			<channel id="powerStatus" typeId="powerStatus" />
+		</channels>
+	</thing-type>
+
+	<thing-type id="audio">
+		<label>CEC Audio</label>
+		<description>A CEC audio device.</description>
+
+		<channels>
+			<channel id="power" typeId="power" />
+			<channel id="powerStatus" typeId="powerStatus" />
+		</channels>
+	</thing-type>
+
 
 </thing:thing-descriptions>
