@@ -23,6 +23,8 @@ public class CecBindingConstants {
 
   public static final String BINDING_ID = "cec";
 
+  public static final ThingTypeUID THING_TYPE_BRIDGE = new ThingTypeUID(BINDING_ID, "bridge");
+
   // List of all Thing Type UIDs
   public static final ThingTypeUID THING_TYPE_TV = new ThingTypeUID(BINDING_ID, "tv");
   public static final ThingTypeUID THING_TYPE_PLAYBACK = new ThingTypeUID(BINDING_ID, "playback");
@@ -36,7 +38,7 @@ public class CecBindingConstants {
   public static final String ACTIVE_SOURCE = "activeSource";
 
   public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = new HashSet<>(
-      Arrays.asList(THING_TYPE_TV, THING_TYPE_AUDIO, THING_TYPE_PLAYBACK, THING_TYPE_RECORDING,
+      Arrays.asList(THING_TYPE_BRIDGE, THING_TYPE_TV, THING_TYPE_AUDIO, THING_TYPE_PLAYBACK, THING_TYPE_RECORDING,
           THING_TYPE_TUNER));
 
   public static final Set<String> SUPPORTED_CHANNELS = new HashSet<>(

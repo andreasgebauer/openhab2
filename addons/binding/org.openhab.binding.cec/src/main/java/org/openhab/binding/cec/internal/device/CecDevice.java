@@ -26,6 +26,7 @@ public class CecDevice {
   private PowerStatus powerStatus;
   private PhysicalAddress physicalAddress;
   private String menuLanguage;
+  private boolean power = false;
 
   private PropertyChangeSupport pcs;
 
@@ -65,6 +66,17 @@ public class CecDevice {
   public void setPowerStatus(PowerStatus powerStatus) {
     pcs.firePropertyChange("powerStatus", this.powerStatus, powerStatus);
     this.powerStatus = powerStatus;
+
+    if (this.powerStatus == PowerStatus.ON) {
+      this.setPower(true);
+    } else if (this.powerStatus == PowerStatus.STANDBY) {
+      this.setPower(false);
+    }
+  }
+
+  private void setPower(boolean power) {
+    pcs.firePropertyChange("power", this.power, power);
+    this.power = power;
   }
 
   public void setPhysicalAddress(final PhysicalAddress physicalAddress) {
@@ -83,7 +95,7 @@ public class CecDevice {
   public void setMenuLanguage(String menuLanguage) {
     pcs.firePropertyChange("menuLanguage", this.menuLanguage, menuLanguage);
     this.menuLanguage = menuLanguage;
-    this.setPowerStatus(PowerStatus.ON);
+    // this.setPowerStatus(PowerStatus.ON);
   }
 
   public void registerListener(PropertyChangeListener listener) {

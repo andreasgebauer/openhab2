@@ -11,6 +11,7 @@ package org.openhab.binding.cec.internal;
 import java.util.Map;
 
 import org.openhab.binding.cec.internal.config.CecBindingConfiguration;
+import org.openhab.binding.cec.internal.device.CecBridge;
 import org.openhab.binding.cec.internal.device.CecDevice;
 import org.openhab.binding.cec.internal.device.DeviceType;
 
@@ -28,5 +29,9 @@ public interface CecService {
   void write(String message);
 
   void writePlain(String string);
+
+  boolean isInitialized();
+
+  CecBridge getBridge();
 
 }

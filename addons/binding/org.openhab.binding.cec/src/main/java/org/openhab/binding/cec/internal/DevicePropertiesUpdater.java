@@ -12,8 +12,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.eclipse.smarthome.core.library.types.StringType;
+import org.openhab.binding.cec.internal.device.CecBridge;
 import org.openhab.binding.cec.internal.device.CecDevice;
-import org.openhab.binding.cec.internal.device.DeviceType;
 import org.openhab.binding.cec.internal.protocol.Message;
 import org.openhab.binding.cec.internal.protocol.Payload;
 import org.openhab.binding.cec.internal.protocol.data.PowerStatus;
@@ -27,7 +27,8 @@ public class DevicePropertiesUpdater {
 
   private static final Logger LOG = LoggerFactory.getLogger(DevicePropertiesUpdater.class);
 
-  static void process(CecDevice senderDevice, CecDevice receiverDevice, Message message) {
+  static void process(CecBridge bridge, CecDevice senderDevice, CecDevice receiverDevice,
+      Message message) {
 
     // set the target if defined
     if (message.getType().getTarget() != null) {
@@ -54,14 +55,14 @@ public class DevicePropertiesUpdater {
         } else if ("receiver".equals(objectName)) {
           injectTarget(receiverDevice, payload, property);
         } else if ("system".equals(objectName)) {
+          injectTarget(bridge, payload, property);
+
           if ("activeSource".equals(property)) {
-            if (senderDevice.getDeviceType() == DeviceType.TV) {
-              senderDevice.setPowerStatus(PowerStatus.ON);
-            }
-            StringType state = new StringType(payload.getValue().toString());
-            // for (CecBindingConfig binding : getBindings(-1, "activeSource")) {
-            // eventPublisher.postUpdate(binding.item, state);
+            // if (senderDevice.getDeviceType() == DeviceType.TV) {
+            // senderDevice.setPowerStatus(PowerStatus.ON);
             // }
+            StringType state = new StringType(payload.getValue().toString());
+
           } else {
             LOG.warn("No Action found for {} and {}", objectName, property);
             return;
@@ -74,7 +75,7 @@ public class DevicePropertiesUpdater {
     }
   }
 
-  private static void injectTarget(CecDevice device, Payload payload, String fieldName) {
+  private static void injectTarget(Object device, Payload payload, String fieldName) {
     try {
       String setterName = "set" + fieldName.substring(0, 1).toUpperCase()
           + fieldName.substring(1, fieldName.length());
@@ -91,7 +92,7 @@ public class DevicePropertiesUpdater {
       }
 
       if (!setterFound) {
-        LOG.warn("Setter not found for " + fieldName + ". Using the field directly.");
+        LOG.warn("Setter not found for {}. Using the field directly.", fieldName);
         Field declaredField = device.getClass().getDeclaredField(fieldName);
         declaredField.setAccessible(true);
         declaredField.set(device, payload.getValue());

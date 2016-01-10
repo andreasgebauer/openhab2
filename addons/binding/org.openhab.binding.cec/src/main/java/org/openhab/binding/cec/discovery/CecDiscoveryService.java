@@ -19,6 +19,7 @@ import org.eclipse.smarthome.config.discovery.DiscoveryResult;
 import org.eclipse.smarthome.config.discovery.DiscoveryResultBuilder;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.ThingUID;
+import org.openhab.binding.cec.CecBindingConstants;
 import org.openhab.binding.cec.internal.CecService;
 import org.openhab.binding.cec.internal.device.CecDevice;
 import org.openhab.binding.cec.internal.device.DeviceType;
@@ -39,13 +40,23 @@ public class CecDiscoveryService extends AbstractDiscoveryService {
   private CecService cecService;
 
   public CecDiscoveryService() throws IllegalArgumentException {
-    super(SUPPORTED_THING_TYPES_UIDS, 5000, false);
+    super(SUPPORTED_THING_TYPES_UIDS, 5000, true);
   }
 
   @Override
   protected void startScan() {
     logger.debug("Starting Discovery");
+    createBridge();
     discoverCecDevices();
+  }
+
+  private void createBridge() {
+    ThingUID uid = new ThingUID(CecBindingConstants.THING_TYPE_BRIDGE, "home");
+
+    Map<String, Object> properties = new HashMap<>(1);
+    DiscoveryResult result = DiscoveryResultBuilder.create(uid).withProperties(properties)
+        .withLabel("CEC Bridge").build();
+    thingDiscovered(result);
   }
 
   @Override

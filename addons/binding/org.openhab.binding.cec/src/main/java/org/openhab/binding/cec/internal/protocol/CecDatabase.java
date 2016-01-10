@@ -48,6 +48,7 @@ public class CecDatabase {
     }
 
     XStream xstream = new XStream(new StaxDriver());
+    xstream.setClassLoader(getClass().getClassLoader());
     xstream.registerConverter(new HexToIntegerConverter());
     xstream.alias("cec-config", CecConfig.class);
     xstream.processAnnotations(MessageType.class);
@@ -55,9 +56,6 @@ public class CecDatabase {
     try {
       InputStream x = entry.openStream();
       config = (CecConfig) xstream.fromXML(x);
-      if (config == null) {
-        return;
-      }
     } catch (IOException e) {
       LOG.error("Unable to load CEC message types!", e);
     }
@@ -72,6 +70,7 @@ public class CecDatabase {
     }
 
     XStream xstream = new XStream(new StaxDriver());
+    xstream.setClassLoader(getClass().getClassLoader());
     xstream.alias("dataTypes", DataTypes.class);
     xstream.processAnnotations(DataTypeDefinition.class);
     xstream.processAnnotations(DataTypes.class);

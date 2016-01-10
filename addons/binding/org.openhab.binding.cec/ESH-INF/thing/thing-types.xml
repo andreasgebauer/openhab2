@@ -4,7 +4,7 @@
 	xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
 	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
 
-	<bridge-type id="cecBridge">
+	<bridge-type id="bridge">
 		<label>CEC Bridge</label>
 		<description>The CEC Bridge</description>
 
@@ -36,7 +36,7 @@
 
 	<thing-type id="tv">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="cecBridge" />
+			<bridge-type-ref id="bridge" />
 		</supported-bridge-type-refs>
 
 		<label>CEC TV</label>
@@ -45,7 +45,6 @@
 		<channels>
 			<channel id="power" typeId="power" />
 			<channel id="powerStatus" typeId="powerStatus" />
-			<channel id="activeSource" typeId="activeSource" />
 		</channels>
 	</thing-type>
 

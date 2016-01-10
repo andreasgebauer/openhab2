@@ -42,16 +42,20 @@ public class CecHandlerFactory extends BaseThingHandlerFactory {
     CecBindingConfiguration config = new CecBindingConfiguration();
 
     String device = (String) properties.get(CecBindingConfiguration.DEVICE);
-    if (device != null)
+    if (device != null) {
       config.device = device;
+    }
 
     String executable = (String) properties.get(CecBindingConfiguration.EXECUTABLE);
-    if (executable != null)
+    if (executable != null) {
       config.executable = executable;
+    }
 
-    Integer refresh = (Integer) properties.get(CecBindingConfiguration.REFRESH_INTERVAL);
-    if (refresh != null)
+    Integer refresh = Integer
+        .valueOf((String) properties.get(CecBindingConfiguration.REFRESH_INTERVAL));
+    if (refresh != null) {
       config.refreshInterval = refresh;
+    }
 
     cecService.setup(config);
   }
@@ -64,7 +68,7 @@ public class CecHandlerFactory extends BaseThingHandlerFactory {
   @Override
   protected ThingHandler createHandler(Thing thing) {
     LOG.debug("Creating thing handler for {}", thing);
-    return new CecHandler(thing, discoveryServiceRegistry, cecService);
+    return new CecHandler(thing, cecService);
   }
 
   public void setCecService(CecService cecService) {
