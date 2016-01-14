@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Forecast Binding
+Bundle-SymbolicName: org.openhab.binding.forecast;singleton:=true
+Bundle-Vendor: openHAB
+Bundle-Version: 2.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: .,
+ lib/OpenForecast-0.5.0.jar
+Import-Package: 
+ org.apache.commons.lang,
+ org.eclipse.smarthome.core.items,
+ org.eclipse.smarthome.core.library.items,
+ org.eclipse.smarthome.core.library.types,
+ org.eclipse.smarthome.core.persistence,
+ org.eclipse.smarthome.core.types,
+ org.eclipse.smarthome.model.persistence.extensions,
+ org.eclipse.smarthome.model.script.engine.action,
+ org.joda.time,
+ org.joda.time.base,
+ org.osgi.framework,
+ org.slf4j
+Service-Component: OSGI-INF/*.xml
+Export-Package: net.sourceforge.openforecast,
+ net.sourceforge.openforecast.input,
+ net.sourceforge.openforecast.models,
+ net.sourceforge.openforecast.output,
+ org.eclipse.smarthome.model.script.actions,
+ org.openhab.binding.forecast
+Bundle-Activator: org.openhab.binding.forecast.ForecastBindingActivator
